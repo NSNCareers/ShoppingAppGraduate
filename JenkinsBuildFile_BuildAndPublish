@@ -1,0 +1,80 @@
+pipeline{
+
+   agent { label "slave01" }
+    
+    
+    environment{
+    NAME="Ngwesse Elvis"
+    BuildOutput="./BuildOutput"  
+    }
+    
+   
+    stages{
+    
+
+        
+        stage('Checkout from SCM'){
+            steps{
+                echo 'Checking Out from GitHub'
+                echo "NAME = ${env.NAME}"
+            }
+        }
+        
+          
+
+        stage('Restore Solution'){
+            steps{
+                echo 'Restoring Solution'
+                sh "dotnet restore LoginApp.sln"
+            }
+        }
+
+        stage('Build Solution'){
+            steps{
+                echo 'Building Solution'
+                 sh 'dotnet build LoginApp.sln'
+            }
+        }
+
+        stage('Testing Project'){
+            steps{
+                echo 'Running unit tests'
+                 sh 'dotnet test'
+            }
+
+        }
+
+        stage('Publish build'){
+            steps{
+                 echo 'Publishing Solution'
+                sh 'dotnet publish -c Release -r win-x64 --output ${BuildOutput} LoginApp.sln'
+            }
+
+        }
+        
+       }
+       
+       
+        
+        
+          post {
+        always {
+            echo 'One way or another, I have finished'
+            deleteDir() /* clean up our workspace */
+        }
+        success {
+            echo 'I succeeeded!'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'I failed :('
+        }
+        changed {
+            echo 'Things were different before...'
+        }
+        
+    } 
+     
+}
