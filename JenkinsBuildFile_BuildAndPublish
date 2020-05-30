@@ -39,7 +39,7 @@ pipeline{
         stage('Testing Project'){
             steps{
                 echo 'Running unit tests'
-                 sh 'dotnet test'
+                 /*sh 'dotnet test'*/
             }
 
         }
