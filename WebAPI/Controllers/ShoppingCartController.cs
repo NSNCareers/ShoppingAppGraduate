@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.DataContext;
-using WebAPI.ExceptionHandler;
 using WebAPI.Model;
 
 namespace WebAPI.Controllers
@@ -19,46 +17,46 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult RemoveFromShoppingCart([FromBody] ShoppingCart shoppingCart)
+        public async Task<IActionResult> RemoveFromShoppingCart([FromBody] ShoppingCart shoppingCart)
         {
-            var results =_shoppingManager.RemoveItem<ShoppingCartException>(shoppingCart.Id).Result;
+            var results = await _shoppingManager.RemoveItem(shoppingCart.Id);
 
             return Ok(results.Message);
         }
 
         [HttpGet]
-        public IActionResult GetAllItemFromShoppingCart()
+        public async Task<IActionResult> GetAllItemFromShoppingCart()
         {
 
-            var results = _shoppingManager.GetAllItem<object>().Result;
+            var results = await _shoppingManager.GetAllItem();
 
             return Ok(results);
         }
 
         [HttpPut]
-        public IActionResult AddItemToShoppingCart([FromBody]ShoppingCart shoppingCart)
+        public async Task<IActionResult> AddItemToShoppingCart([FromBody]ShoppingCart shoppingCart)
         {
-            var results = _shoppingManager.AddItem<ShoppingCartException>(shoppingCart).Result;
+            var results = await _shoppingManager.AddItem(shoppingCart);
 
             return Ok(results.Message);
         }
 
         [HttpPost]
-        public IActionResult UpdateShoppingCart([FromBody]ShoppingCart shoppingCart)
+        public async Task<IActionResult> UpdateShoppingCart([FromBody]ShoppingCart shoppingCart)
         {
-            var results = _shoppingManager.UpdateItem<ShoppingCartException>(shoppingCart).Result;
+            var results = await _shoppingManager.UpdateItem(shoppingCart);
 
             return Ok(results.Message);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetItemFromShoppingCart([FromRoute]int id)
+        public async Task<IActionResult> GetItemFromShoppingCart([FromRoute]int id)
         {
-            ShoppingCartException results;
+            List<ShoppingCart> results;
 
-            results = _shoppingManager.GetItem<ShoppingCartException>(id).Result;
+            results = await _shoppingManager.GetItem(id);
           
-            return Ok(results.ShoppingCarts);
+            return Ok(results);
         }
     }
 }

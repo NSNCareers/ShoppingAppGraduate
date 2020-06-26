@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebAPI.DataContext;
 using WebAPI.ExceptionHandler;
 using WebAPI.Model;
@@ -16,13 +18,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetItemFromShoppingCart([FromRoute] int id)
+        public async Task<IActionResult> GetItemFromShoppingCart([FromRoute] int id)
         {
-            ShoppingCartException results = null;
+            List<ShoppingCart> results = null;
 
-            results = _shoppingManager.GetItem<ShoppingCartException>(id).Result;
+            results = await _shoppingManager.GetItem(id);
 
-            return Ok(results.ShoppingCarts);
+            return Ok(results);
         }
     }
 }

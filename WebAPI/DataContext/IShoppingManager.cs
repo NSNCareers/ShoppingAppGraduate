@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebAPI.ExceptionHandler;
 using WebAPI.Model;
 
 namespace WebAPI.DataContext
 {
     public interface IShoppingManager
     {
-        Task<T> GetItem<T>(int ItemId) where T : class;
-        Task<T> RemoveItem<T>(int itemId) where T : class;
-        Task<List<T>> GetAllItem<T>() where T : class;
-        Task<T> AddItem<T>(ShoppingCart shoppingCart) where T : class;
-        Task<T> UpdateItem<T>(ShoppingCart shoppingCart) where T : class;
+        Task<List<ShoppingCart>> GetItem(int ItemId);
+        Task<ShoppingCartException> RemoveItem(int itemId);
+        Task<List<ShoppingCart>> GetAllItem();
+        Task<ShoppingCartException> AddItem(ShoppingCart shoppingCart);
+        Task<ShoppingCartException> UpdateItem(ShoppingCart shoppingCart);
     }
 }
