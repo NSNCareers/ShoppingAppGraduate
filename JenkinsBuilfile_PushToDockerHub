@@ -6,7 +6,7 @@ pipeline{
     NAME="Ngwesse Elvis"
     BuildOutput="./BuildOutput"
     registry = "dockerelvis/shoppingapp"
-    registryCredential = 'duckerhub'
+    registryCredential = '6b7e57df-81e0-4fe2-a5aa-795257ce63ce'
     dockerImage = ''
     
     }
