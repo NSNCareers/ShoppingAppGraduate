@@ -11,7 +11,7 @@ namespace WebAPI.Model
         public  string OrderQuantity { get; set; }
         public  decimal Price { get; set; }
 
-        // So that entity framework will populate address when getting cart from DB
+        // So that entity framework will populate address when getting shoppingcart from DB
         public virtual CustomerAddress Address { get; set; }
     }
 }
