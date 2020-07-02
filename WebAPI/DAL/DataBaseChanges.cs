@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Context;
@@ -8,8 +9,9 @@ namespace WebAPI.DAL
     public class DataBaseChanges : IDataBaseChanges
     {
         private ShoppingCartContext _context;
+        private ILogger<DataBaseChanges> _logger;
 
-        public DataBaseChanges(ShoppingCartContext context)
+        public DataBaseChanges(ShoppingCartContext context, ILogger<DataBaseChanges> logger)
         {
             _context = context;
         }
@@ -18,6 +20,7 @@ namespace WebAPI.DAL
         {
             var set = _context.Set<T>();
             await set.AddAsync(obj);
+            _logger.LogInformation("Added object");
         }
 
         public void Update<T>(T obj)where T : class
