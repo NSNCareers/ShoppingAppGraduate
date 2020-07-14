@@ -14,6 +14,7 @@ namespace WebAPI.DAL
         public DataBaseChanges(ShoppingCartContext context, ILogger<DataBaseChanges> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task AddAsync<T>(T obj) where T : class

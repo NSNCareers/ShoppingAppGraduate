@@ -21,6 +21,7 @@ namespace WebAPI.DataContext
         {
             _dataBaseChanges = dataBaseChanges;
             _context = context;
+            _logger = logger;
         }
 
         public async Task<List<ShoppingCart>> GetItem(int ItemId)
@@ -57,7 +58,7 @@ namespace WebAPI.DataContext
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An error occured during getting item from DB => {ex.Message}");
+                _logger.LogError($"An error occured during getting item from DB => {ex.InnerException}");
             }
 
             return new List<ShoppingCart>();
@@ -72,7 +73,7 @@ namespace WebAPI.DataContext
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An error occured during getting item from DB => {ex.Message}");
+                _logger.LogError($"An error occured during getting item from DB => {ex.InnerException}");
             }
 
             return new ShoppingCartException
