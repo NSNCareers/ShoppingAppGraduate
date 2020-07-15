@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Text;
 using WebAPI.Context;
 using WebAPI.Dependency;
 
@@ -28,6 +31,9 @@ namespace WebAPI
         {
             //Connection string 
             var conString = _configuration.GetConnectionString("ShoppingCartDBConnection");
+            // Secret Password
+            var appSecret = _configuration.GetConnectionString("Secret");
+
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             // Add S3 to the ASP.NET Core dependency injection framework.
             services.AddAWSService<Amazon.S3.IAmazonS3>();
@@ -61,9 +67,9 @@ namespace WebAPI
                     }
                 });
 
-                c.AddSecurityDefinition("[auth scheme: same name as defined for asp.net]", new OpenApiSecurityScheme()
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
-                    Description = "Api key needed to access the endpoints. X-Api-Key: SNSCareers_API_Key",
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     In = ParameterLocation.Header,
                     Name = "X-ApiKey",
                     Type = SecuritySchemeType.ApiKey
@@ -86,6 +92,24 @@ namespace WebAPI
                         new string[] {}
                     }});
             });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(options =>
+           {
+               options.RequireHttpsMetadata = false;
+               options.SaveToken = false;
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateAudience = false,
+                   ValidateIssuer = false,
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSecret))
+               };
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -111,6 +135,10 @@ namespace WebAPI
             {
                 app.UseHsts();
             }
+
+            app.UseAuthentication();
+            //app.UseAuthorization();
+            //app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.UseHttpsRedirection();
             app.UseMvc();

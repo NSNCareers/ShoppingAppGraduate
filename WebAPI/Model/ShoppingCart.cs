@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebAPI.Model
 {
@@ -13,5 +14,6 @@ namespace WebAPI.Model
 
         // So that entity framework will populate address when getting shoppingcart from DB
         public virtual CustomerAddress Address { get; set; }
+        public string Message { get; set; }
     }
 }

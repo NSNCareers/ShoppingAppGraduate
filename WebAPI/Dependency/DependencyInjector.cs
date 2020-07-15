@@ -2,6 +2,7 @@
 using WebAPI.DAL;
 using WebAPI.Data;
 using WebAPI.DataContext;
+using WebAPI.Token;
 
 namespace WebAPI.Dependency
 {
@@ -17,6 +18,7 @@ namespace WebAPI.Dependency
             services.AddTransient<IShoppingManager, ShoppingManager>();
             services.AddTransient<IShoppingCartData, ShoppingCartData>();
             services.AddTransient<IDataBaseChanges, DataBaseChanges>();
+            services.AddTransient<IUserTokenGenerator, UserTokenGenerator>();
             return services;
         }
     }

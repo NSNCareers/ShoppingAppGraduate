@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using WebAPI.DataContext;
-using WebAPI.ExceptionHandler;
-using WebAPI.Model;
+using WebAPI.Token;
 
 namespace WebAPI.Controllers
 {
@@ -11,23 +8,19 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ShoppingCartController2 : ControllerBase
     {
-        private readonly IShoppingManager _shoppingManager; 
-        public ShoppingCartController2(IShoppingManager shoppingManager)
+        private readonly IShoppingManager _shoppingManager;
+        private readonly IUserTokenGenerator _userTokenGenerator;
+
+        public ShoppingCartController2(IShoppingManager shoppingManager, IUserTokenGenerator userTokenGenerator)
         {
             _shoppingManager = shoppingManager;
+            _userTokenGenerator = userTokenGenerator;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetItemFromShoppingCart([FromRoute] int id)
+        [HttpGet("{userId}")]
+        public IActionResult GetToken([FromRoute]int userId)
         {
-            List<ShoppingCart> results = null;
-
-            results = await _shoppingManager.GetItem(id);
+            var results = _userTokenGenerator.GenerateToken(userId);
 
             return Ok(results);
         }

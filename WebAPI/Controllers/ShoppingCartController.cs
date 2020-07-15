@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebAPI.DataContext;
@@ -10,7 +11,8 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ShoppingCartController : ControllerBase
     {
-        private readonly IShoppingManager _shoppingManager; 
+        private readonly IShoppingManager _shoppingManager;
+
         public ShoppingCartController(IShoppingManager shoppingManager)
         {
             _shoppingManager = shoppingManager;
@@ -22,6 +24,7 @@ namespace WebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> RemoveFromShoppingCart([FromRoute]int id)
         {
             var results = await _shoppingManager.RemoveItem(id);
@@ -34,6 +37,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllItemFromShoppingCart()
         {
 
@@ -48,6 +52,7 @@ namespace WebAPI.Controllers
         /// <param name="shoppingCart"></param>
         /// <returns></returns>
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> AddItemToShoppingCart([FromBody]ShoppingCart shoppingCart)
         {
             var results = await _shoppingManager.AddItem(shoppingCart);
@@ -61,6 +66,7 @@ namespace WebAPI.Controllers
         /// <param name="shoppingCart"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateShoppingCart([FromBody]ShoppingCart shoppingCart)
         {
             var results = await _shoppingManager.UpdateItem(shoppingCart);
@@ -74,12 +80,13 @@ namespace WebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetItemFromShoppingCart([FromRoute]int id)
         {
             List<ShoppingCart> results;
 
             results = await _shoppingManager.GetItem(id);
-          
+
             return Ok(results);
         }
     }

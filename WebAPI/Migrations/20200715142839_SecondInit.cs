@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Migrations
 {
-    public partial class first : Migration
+    public partial class SecondInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,8 @@ namespace WebAPI.Migrations
                     Gender = table.Column<string>(nullable: false),
                     CustomerName = table.Column<string>(maxLength: 20, nullable: false),
                     OrderQuantity = table.Column<string>(nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(5,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
+                    Message = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -70,8 +71,8 @@ namespace WebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "ShoppingCarts",
-                columns: new[] { "Id", "CustomerName", "Gender", "OrderQuantity", "Price" },
-                values: new object[] { 1, "Jonathan", "Male", "900 KG", 34m });
+                columns: new[] { "Id", "CustomerName", "Gender", "Message", "OrderQuantity", "Price" },
+                values: new object[] { 1, "Jonathan", "Male", "", "900 KG", 34m });
 
             migrationBuilder.InsertData(
                 table: "Addresses",

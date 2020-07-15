@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Context;
 using WebAPI.DAL;
-using WebAPI.ExceptionHandler;
 using WebAPI.Model;
 
 namespace WebAPI.DataContext
@@ -31,13 +30,21 @@ namespace WebAPI.DataContext
         /// <returns></returns>
         public async Task<List<ShoppingCart>> GetItem(int ItemId)
         {
+            var shoppingCart = new List<ShoppingCart>();
+
             try
             {
-                var shoppingCart = await _context.ShoppingCarts
+                    shoppingCart = await _context.ShoppingCarts
                     .Include(s => s.Item)
                     .Include(s => s.Address)
                     .Where( s => s.Id == ItemId)
                     .ToListAsync();
+                if (shoppingCart.Count== 0)
+                {
+                    _logger.LogInformation($"User with ID :{ItemId} does not exist");
+
+                    return new List<ShoppingCart> { new ShoppingCart { Message = $"User with ID:{ItemId} does not exist" } };
+                }
 
 
                 return shoppingCart;
@@ -48,7 +55,7 @@ namespace WebAPI.DataContext
                
             }
 
-            _logger.LogInformation($"Successfully returned Items with ID :{ItemId}");
+            _logger.LogInformation($"Successfully returned User with ID :{ItemId}");
 
             return new List<ShoppingCart>();
         }
@@ -61,17 +68,26 @@ namespace WebAPI.DataContext
         {
             try
             {
-                return await _context.ShoppingCarts
+                var allItems = await _context.ShoppingCarts
                     .Include(s => s.Item)
                     .Include(s => s.Address)
                     .ToListAsync();
+
+                if (allItems.Count == 0)
+                {
+                    _logger.LogInformation($"No user exist in shopping cart");
+
+                    return new List<ShoppingCart> { new ShoppingCart { Message = $"No user exist in shopping cart" } };
+                }
+
+                return allItems;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An error occured during getting item from DB => {ex.InnerException}");
+                _logger.LogError($"An error occured during getting all users from DB => {ex.InnerException}");
             }
 
-            _logger.LogInformation("Successfully returned Items");
+            _logger.LogInformation("Successfully returned all users from shopping cart");
 
             return new List<ShoppingCart>();
         }
@@ -81,7 +97,7 @@ namespace WebAPI.DataContext
         /// </summary>
         /// <param name="shoppingCart"></param>
         /// <returns></returns>
-        public async  Task<ShoppingCartException> AddItem(ShoppingCart shoppingCart)
+        public async  Task<ShoppingCart> AddItem(ShoppingCart shoppingCart)
         {
             try
             {
@@ -91,12 +107,12 @@ namespace WebAPI.DataContext
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An error occured during getting item from DB => {ex.InnerException}");
+                _logger.LogError($"An error occured during adding item to DB => {ex.InnerException}");
+
             }
 
-            return new ShoppingCartException
+            return new ShoppingCart
             {
-                BoolResults = true,
                 Message = $"Successfully added Item with Id:{shoppingCart.Id}"
             };
         }
@@ -106,7 +122,7 @@ namespace WebAPI.DataContext
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        public async Task<ShoppingCartException> RemoveItem(int itemId)
+        public async Task<ShoppingCart> RemoveItem(int itemId)
         {
             try
             {
@@ -114,7 +130,7 @@ namespace WebAPI.DataContext
                     .FindAsync(itemId);
                 if (results == null)
                 {
-                    return new ShoppingCartException
+                    return new ShoppingCart
                     {
                         Message = $"Item with Id: {itemId} does not exist in shopping cart"
                     } ;
@@ -130,10 +146,9 @@ namespace WebAPI.DataContext
                 _logger.LogError($"An error occured during getting item from DB => {ex.Message}");
             }
 
-            return new ShoppingCartException
+            return new ShoppingCart
             {
-                BoolResults = true,
-                Message = $"Successfully removed Item with Id:{itemId}"
+                Message = $"Successfully removed User with Id:{itemId}"
             };
         }
 
@@ -142,7 +157,7 @@ namespace WebAPI.DataContext
         /// </summary>
         /// <param name="shoppingCart"></param>
         /// <returns></returns>
-        public async Task<ShoppingCartException> UpdateItem(ShoppingCart shoppingCart)
+        public async Task<ShoppingCart> UpdateItem(ShoppingCart shoppingCart)
         {
 
             try
@@ -151,9 +166,9 @@ namespace WebAPI.DataContext
 
                 if (results == null)
                 {
-                    return new ShoppingCartException
+                    return new ShoppingCart
                     {
-                        Message = $"Item with Id: {shoppingCart.Id} does not exist in shopping cart"
+                        Message = $"User with Id: {shoppingCart.Id} does not exist in shopping cart"
                     } ;
                 }
                 //To solve the problem of tracking entity. Make sure entity is in stable state
@@ -163,12 +178,12 @@ namespace WebAPI.DataContext
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An error occured during getting item from DB => {ex.Message}");
+                _logger.LogError($"An error occured during getting item from DB => {ex.InnerException}");
             }
 
-            return new ShoppingCartException
+            return new ShoppingCart
             {
-                Message=$"Successfully updated Item with Id:{shoppingCart.Id}"
+                Message=$"Successfully updated user with Id:{shoppingCart.Id}"
             };
         }
     }

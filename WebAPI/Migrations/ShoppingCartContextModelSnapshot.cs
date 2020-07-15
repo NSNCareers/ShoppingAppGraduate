@@ -84,6 +84,8 @@ namespace WebAPI.Migrations
                     b.Property<string>("Gender")
                         .IsRequired();
 
+                    b.Property<string>("Message");
+
                     b.Property<string>("OrderQuantity")
                         .IsRequired();
 
@@ -95,7 +97,7 @@ namespace WebAPI.Migrations
                     b.ToTable("ShoppingCarts");
 
                     b.HasData(
-                        new { Id = 1, CustomerName = "Jonathan", Gender = "Male", OrderQuantity = "900 KG", Price = 34m }
+                        new { Id = 1, CustomerName = "Jonathan", Gender = "Male", Message = "", OrderQuantity = "900 KG", Price = 34m }
                     );
                 });
 

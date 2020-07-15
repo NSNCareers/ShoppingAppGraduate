@@ -21,6 +21,7 @@ namespace WebAPI.Data
                     Id = 1,
                     OrderQuantity = "900 KG",
                     Price = 34m,
+                    Message = ""
                 }
                 );         
         }
