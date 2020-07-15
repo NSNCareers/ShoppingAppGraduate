@@ -7,6 +7,11 @@ namespace WebAPI.Dependency
 {
     public static class DependencyInjector
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection ConfigureShoppingCartServices(this IServiceCollection services)
         {
             services.AddTransient<IShoppingManager, ShoppingManager>();

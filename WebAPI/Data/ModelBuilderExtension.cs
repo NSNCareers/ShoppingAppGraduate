@@ -5,6 +5,10 @@ namespace WebAPI.Data
 {
     public static class ModelBuilderExtension
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         //Shopping Cart Data 
         public static void SeedShoppingCartData(this ModelBuilder modelBuilder)
         {
@@ -21,6 +25,10 @@ namespace WebAPI.Data
                 );         
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         //Item data
         public static void SeedItemData(this ModelBuilder modelBuilder)
         {
@@ -38,6 +46,10 @@ namespace WebAPI.Data
                );
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         public static void SeedAddressData(this ModelBuilder modelBuilder)
         {
            

@@ -16,14 +16,23 @@ namespace WebAPI.Controllers
             _shoppingManager = shoppingManager;
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromShoppingCart([FromBody] ShoppingCart shoppingCart)
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveFromShoppingCart([FromRoute]int id)
         {
-            var results = await _shoppingManager.RemoveItem(shoppingCart.Id);
+            var results = await _shoppingManager.RemoveItem(id);
 
             return Ok(results.Message);
         }
 
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetAllItemFromShoppingCart()
         {
@@ -33,6 +42,11 @@ namespace WebAPI.Controllers
             return Ok(results);
         }
 
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="shoppingCart"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> AddItemToShoppingCart([FromBody]ShoppingCart shoppingCart)
         {
@@ -41,6 +55,11 @@ namespace WebAPI.Controllers
             return Ok(results.Message);
         }
 
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="shoppingCart"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateShoppingCart([FromBody]ShoppingCart shoppingCart)
         {
@@ -49,6 +68,11 @@ namespace WebAPI.Controllers
             return Ok(results.Message);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItemFromShoppingCart([FromRoute]int id)
         {

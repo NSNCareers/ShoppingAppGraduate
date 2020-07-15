@@ -5,6 +5,10 @@ namespace WebAPI.Data
 {
     public class ShoppingCartData : IShoppingCartData
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ShoppingCart InitShoppingCart()
         {
             var shoppingCart = new ShoppingCart

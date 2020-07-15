@@ -17,6 +17,11 @@ namespace WebAPI.Controllers
             _shoppingManager = shoppingManager;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItemFromShoppingCart([FromRoute] int id)
         {

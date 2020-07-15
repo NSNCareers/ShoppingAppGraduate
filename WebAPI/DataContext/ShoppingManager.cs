@@ -24,6 +24,11 @@ namespace WebAPI.DataContext
             _logger = logger;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ItemId"></param>
+        /// <returns></returns>
         public async Task<List<ShoppingCart>> GetItem(int ItemId)
         {
             try
@@ -43,10 +48,15 @@ namespace WebAPI.DataContext
                
             }
 
+            _logger.LogInformation($"Successfully returned Items with ID :{ItemId}");
+
             return new List<ShoppingCart>();
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<ShoppingCart>> GetAllItem() 
         {
             try
@@ -61,15 +71,23 @@ namespace WebAPI.DataContext
                 _logger.LogError($"An error occured during getting item from DB => {ex.InnerException}");
             }
 
+            _logger.LogInformation("Successfully returned Items");
+
             return new List<ShoppingCart>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shoppingCart"></param>
+        /// <returns></returns>
         public async  Task<ShoppingCartException> AddItem(ShoppingCart shoppingCart)
         {
             try
             {
                 await _dataBaseChanges.AddAsync(shoppingCart);
                 await _dataBaseChanges.CommitAsync();
+                _logger.LogInformation("Successfully committed changes in Database");
             }
             catch (Exception ex)
             {
@@ -83,6 +101,11 @@ namespace WebAPI.DataContext
             };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
         public async Task<ShoppingCartException> RemoveItem(int itemId)
         {
             try
@@ -96,8 +119,11 @@ namespace WebAPI.DataContext
                         Message = $"Item with Id: {itemId} does not exist in shopping cart"
                     } ;
                 }
+
                 _dataBaseChanges.Remove(results);
                 await _dataBaseChanges.CommitAsync();
+                _logger.LogInformation("Successfully removed and committed changes in Database");
+
             }
             catch (Exception ex)
             {
@@ -111,12 +137,18 @@ namespace WebAPI.DataContext
             };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shoppingCart"></param>
+        /// <returns></returns>
         public async Task<ShoppingCartException> UpdateItem(ShoppingCart shoppingCart)
         {
 
             try
             {
                 var results = await _context.ShoppingCarts.FindAsync(shoppingCart.Id);
+
                 if (results == null)
                 {
                     return new ShoppingCartException
