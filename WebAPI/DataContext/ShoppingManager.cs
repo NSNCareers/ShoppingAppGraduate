@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using WebAPI.Context;
 using WebAPI.DAL;
@@ -39,14 +40,18 @@ namespace WebAPI.DataContext
                     .Include(s => s.Address)
                     .Where( s => s.Id == ItemId)
                     .ToListAsync();
-                if (shoppingCart.Count== 0)
+
+                var results = shoppingCart.GetEnumerator();
+                int id = ItemId;
+
+                while (!results.MoveNext())
                 {
                     _logger.LogInformation($"User with ID :{ItemId} does not exist");
 
                     return new List<ShoppingCart> { new ShoppingCart { Message = $"User with ID:{ItemId} does not exist" } };
                 }
 
-
+                _logger.LogInformation($"Successfully returned User with ID :{ItemId}");
                 return shoppingCart;
             }
             catch (Exception ex)
@@ -54,8 +59,6 @@ namespace WebAPI.DataContext
                 _logger.LogError($"An error occured during getting item from DB => {ex.Message}");
                
             }
-
-            _logger.LogInformation($"Successfully returned User with ID :{ItemId}");
 
             return new List<ShoppingCart>();
         }
@@ -132,7 +135,7 @@ namespace WebAPI.DataContext
                 {
                     return new ShoppingCart
                     {
-                        Message = $"Item with Id: {itemId} does not exist in shopping cart"
+                        Message = $"User with Id: {itemId} does not exist in shopping cart"
                     } ;
                 }
 

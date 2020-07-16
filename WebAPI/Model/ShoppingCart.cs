@@ -14,6 +14,7 @@ namespace WebAPI.Model
 
         // So that entity framework will populate address when getting shoppingcart from DB
         public virtual CustomerAddress Address { get; set; }
+        public DateTime DateTime { get { return DateTime.Now; } }
         public string Message { get; set; }
     }
 }

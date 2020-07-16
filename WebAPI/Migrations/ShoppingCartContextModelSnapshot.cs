@@ -54,6 +54,8 @@ namespace WebAPI.Migrations
 
                     b.Property<int>("CartId");
 
+                    b.Property<string>("ItemName");
+
                     b.Property<string>("Seller");
 
                     b.Property<int>("Size");
@@ -67,7 +69,7 @@ namespace WebAPI.Migrations
                     b.ToTable("Items");
 
                     b.HasData(
-                        new { Id = 1, CartId = 1, Seller = "Amazon", Size = 34, Weight = 1002 }
+                        new { Id = 1, CartId = 1, ItemName = "Rice", Seller = "Amazon", Size = 34, Weight = 1002 }
                     );
                 });
 

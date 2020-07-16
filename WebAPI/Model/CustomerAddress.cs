@@ -1,4 +1,6 @@
-﻿namespace WebAPI.Model
+﻿using System;
+
+namespace WebAPI.Model
 {
     public class CustomerAddress
     {
@@ -8,6 +10,7 @@
         public int HouseNumber { get; set; }
         public string PostCode { get; set; }
         public string Town { get; set; }
+        public DateTime DateTime { get { return DateTime.Now; } }
         public ShoppingCart Cart { get; set; }
     }
 }

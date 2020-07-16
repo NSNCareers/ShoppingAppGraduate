@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Migrations
 {
-    public partial class SecondInit : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,7 @@ namespace WebAPI.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CartId = table.Column<int>(nullable: false),
+                    ItemName = table.Column<string>(nullable: true),
                     Size = table.Column<int>(nullable: false),
                     Weight = table.Column<int>(nullable: false),
                     Seller = table.Column<string>(nullable: true)
@@ -81,8 +82,8 @@ namespace WebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "CartId", "Seller", "Size", "Weight" },
-                values: new object[] { 1, 1, "Amazon", 34, 1002 });
+                columns: new[] { "Id", "CartId", "ItemName", "Seller", "Size", "Weight" },
+                values: new object[] { 1, 1, "Rice", "Amazon", 34, 1002 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CartId",

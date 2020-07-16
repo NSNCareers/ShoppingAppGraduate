@@ -43,6 +43,7 @@ namespace WebAPI.Data
                    Size = 34,
                    Weight = 1002,
                    Seller = "Amazon",
+                   ItemName = "Rice"
                   }
                );
         }

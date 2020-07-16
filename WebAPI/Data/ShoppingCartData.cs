@@ -17,6 +17,7 @@ namespace WebAPI.Data
                 Gender="Male",
                 OrderQuantity = "800 KG",
                 Price = 34m,
+                Message = "I love Rice",
                 Address = new CustomerAddress
                 {
                     HouseNumber = 22,
@@ -30,13 +31,15 @@ namespace WebAPI.Data
                    {
                     Size=34,
                     Weight=1002,
-                    Seller="Amazon"
+                    Seller="Amazon",
+                    ItemName = "Rice"
                    },
                     new Item
                    {
                     Size=35,
                     Weight=1003,
-                    Seller="Argos"
+                    Seller="Argos",
+                    ItemName = "Fufu"
                    },
                 },
               
