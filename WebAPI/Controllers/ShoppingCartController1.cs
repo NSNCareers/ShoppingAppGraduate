@@ -7,8 +7,7 @@ using WebAPI.Model;
 
 namespace WebAPI.Controllers
 {
-    [Route("v1/shopping")]
-    [ApiController]
+
     public class ShoppingCartController3 : ControllerBase
     {
         private readonly IShoppingManager _shoppingManager;
